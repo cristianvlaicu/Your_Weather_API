@@ -4,11 +4,15 @@ from flask import Flask, render_template  # Flask is a class that create object 
 import pandas as pd
 
 
-app = Flask(__name__)  # create a variable where
+app = Flask(__name__)  # create a variable where it can be executed when ir is called from the main program.
+
+stations = pd.read_csv("data_small/stations.txt", skiprows=17)
+stations = stations[["STAID", "STANAME                                 "]]  # display those 2 columns.
 
 @app.route("/")  # is a decorator that connect that method to the function above.
 def home():
-    return render_template("home.html")  # init_tutorial HAS to be inside the folder templates and the render_templates go to that folder and iniate the html file.
+    return render_template("home.html", data=stations.to_html())  # home.html HAS to be inside the folder templates and the render_templates go to that folder and start the html file.
+                                                                                      # stations.to_html() is to give the structure of the html code. And inside the home.html we have to put |safe after data, to can see it in cells table form.
 
 @app.route("/api/v1/<station>/<date>")   # with <station>/<date> user can change thore parameters.
 def api(station, date):                  # api funtion use those parameters.
